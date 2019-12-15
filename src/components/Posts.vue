@@ -9,6 +9,12 @@
             <h3 class="text-danger">{{ post.data.ups }} 👆</h3>
             <p>created {{ post.data.created }} ago by {{ post.data.author }}</p>
             <span class="badge badge-pill badge-primary">{{ post.data.num_comments }} comments</span>
+            <button @click="post.showImage = !post.showImage" type="button" class="btn btn-primary">
+              {{ post.showImage ? 'Hide' : 'Show' }} Image
+            </button>
+            <div v-if="post.showImage">
+              <img :src="post.data.url" alt="">
+            </div>
           </p>
         </div>
       </li>
@@ -35,6 +41,9 @@ export default {
       fetch(url)
         .then(res => res.json())
         .then((result) => {
+          result.data.children.forEach(child => {
+            child.showImage = false;
+          });
           this.posts = result.data.children;
         });
     },
